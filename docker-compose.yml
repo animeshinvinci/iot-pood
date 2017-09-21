@@ -1,0 +1,85 @@
+version: '2'
+
+
+services:
+    storage:
+        image: storage:1.0
+        expose:
+            - "81"
+            - "8081"
+            - "9000"
+        ports:
+            - "8081:81"
+        stdin_open: true
+        restart: always
+        networks:
+            dockernet:
+                ipv4_address: 172.16.2.10
+    service:
+        image: service:1.0
+        expose:
+            - "82"
+            - "8082"
+            - "9000"
+        ports:
+            - "8082:82"
+        stdin_open: true
+        restart: always
+        networks:
+            dockernet:
+                ipv4_address: 172.16.2.11
+    rules:
+        image: rules:1.0
+        expose:
+            - "83"
+            - "8083"
+            - "9000"
+        ports:
+            - "8083:83"
+        stdin_open: true
+        restart: always
+        networks:
+            dockernet:
+                ipv4_address: 172.16.2.12
+
+    mqtt:
+        image: mqtt:1.0
+        expose:
+            - "84"
+            - "8084"
+            - "9000"
+        ports:
+            - "8084:84"
+        stdin_open: true
+        restart: always
+        networks:
+            dockernet:
+                ipv4_address: 172.16.2.13
+
+    zookeeper:
+        image: wurstmeister/zookeeper
+        ports:
+          - "2181:2181"
+        networks:
+            - dockernet
+    kafka:
+        build: .
+        ports:
+          - "9092"
+        environment:
+          KAFKA_ADVERTISED_HOST_NAME: 192.168.2.3
+          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+          KAFKA_CREATE_TOPICS: "v1.data:1:1,v1.command:1:1"
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        networks:
+            - dockernet
+
+networks:
+    dockernet:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+            - subnet: 172.16.2.0/24
+              gateway: 172.16.2.1
