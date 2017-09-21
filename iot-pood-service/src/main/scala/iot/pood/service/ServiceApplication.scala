@@ -6,6 +6,9 @@ import akka.http.scaladsl.model.{StatusCode, StatusCodes}
 import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
+import iot.pood.base.config.Configuration
+import iot.pood.base.http.BaseHttp
+import iot.pood.base.log.Log
 import iot.pood.service.rest.ApiV1
 
 import scala.io.StdIn
@@ -14,25 +17,25 @@ import scala.io.StdIn
 /**
   * Created by rafik on 21.5.2017.
   */
-object ServiceApplication extends App with ApiV1 {
+object ServiceApplication extends App with ApiV1 with Log{
 
+  Configuration.init()
+  val httpConfig = BaseHttp.httpConfig(Configuration.appConfig)
 
-  val config = ConfigFactory.load()
-
-  println("This is applicasdftion")
-  implicit val system = ActorSystem("my-system")
+  implicit val system = ActorSystem()
   implicit val materializer = ActorMaterializer()
-  // needed for the future flatMap/onComplete in the end
   implicit val executionContext = system.dispatcher
 
-  val port = config.getInt("http.port")
 
-  val bindingFuture = Http().bindAndHandle(apiV1Route, "0.0.0.0", port)
-
-  println(s"Server online at http://localhost:$port/\nPress RETURN to stop...")
-  StdIn.readLine() // let it run until user presses return
+  log.info("Start server HOST: {}:{} ",httpConfig.host,httpConfig.port)
+  log.info("HTTP configuration: {}",httpConfig)
+  val bindingFuture = Http().bindAndHandle(apiV1Route, httpConfig.host,httpConfig.port)
+  log.info("Press any key to stop...")
+  StdIn.readLine()
   bindingFuture
-    .flatMap(_.unbind()) // trigger unbinding from the port
-    .onComplete(_ => system.terminate()) // and shutdown when done
-
+    .flatMap(_.unbind())
+    .onComplete(_ => {
+      log.info("Terminate ActorSystem")
+      system.terminate()
+      })
 }

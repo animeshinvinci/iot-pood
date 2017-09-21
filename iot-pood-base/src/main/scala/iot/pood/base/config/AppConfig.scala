@@ -7,7 +7,7 @@ import com.typesafe.config.{Config, ConfigFactory}
   */
 trait AppConfig {
 
-  def config: Config = ConfigFactory.load()
+  def config: Config = Configuration.appConfig
 
 }
 
