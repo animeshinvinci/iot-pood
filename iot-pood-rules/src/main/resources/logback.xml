@@ -9,8 +9,8 @@
     </appender>
 
     <logger name="iot.pood.rules" level="INFO"/>
-    <logger name="org.apache.kafka" level="ERROR" />
-    <logger  name="cakesolutions.kafka" level="DEBUG"/>
+    <logger name="org.apache.kafka" level="INFO" />
+    <logger  name="cakesolutions.kafka" level="INFO"/>
 
     <root level="DEBUG">
         <appender-ref ref="STDOUT"/>
