@@ -27,13 +27,7 @@ import scala.concurrent.duration.DurationDouble
   */
 object StorageApplication extends App{
 
-  implicit val system = ActorSystem()
-  val storageActor = system.actorOf(Storage.props())
-//  val sender = system.actorOf(Props(new SenderActor(storageActor)))
   StdIn.readLine()
-  system.terminate()
-//  printf("End application")
-
 }
 
 class SenderActor(storage: ActorRef) extends Actor  with ActorLogging{

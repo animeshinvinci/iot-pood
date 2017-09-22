@@ -5,56 +5,60 @@ services:
     storage:
         image: storage:1.0
         expose:
-            - "81"
             - "8081"
             - "9000"
         ports:
-            - "8081:81"
+            - "8081:8081"
         stdin_open: true
         restart: always
         networks:
             dockernet:
                 ipv4_address: 172.16.2.10
+        depends_on:
+            - kafka
     service:
         image: service:1.0
         expose:
-            - "82"
             - "8082"
             - "9000"
         ports:
-            - "8082:82"
+            - "8082:8082"
         stdin_open: true
         restart: always
         networks:
             dockernet:
                 ipv4_address: 172.16.2.11
+        depends_on:
+            - kafka
     rules:
         image: rules:1.0
         expose:
-            - "83"
             - "8083"
             - "9000"
         ports:
-            - "8083:83"
+            - "8083:8083"
         stdin_open: true
         restart: always
         networks:
             dockernet:
                 ipv4_address: 172.16.2.12
+        depends_on:
+            - kafka
 
     mqtt:
         image: mqtt:1.0
         expose:
-            - "84"
             - "8084"
             - "9000"
         ports:
-            - "8084:84"
+            - "8084:8084"
         stdin_open: true
         restart: always
         networks:
             dockernet:
                 ipv4_address: 172.16.2.13
+        depends_on:
+            - kafka
 
     zookeeper:
         image: wurstmeister/zookeeper
@@ -63,17 +67,20 @@ services:
         networks:
             - dockernet
     kafka:
-        build: .
+        build: kafka/
         ports:
           - "9092"
         environment:
-          KAFKA_ADVERTISED_HOST_NAME: 192.168.2.3
+#          KAFKA_ADVERTISED_HOST_NAME: 192.168.2.3
+          KAFKA_ADVERTISED_HOST_NAME: 192.168.1.22
           KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
           KAFKA_CREATE_TOPICS: "v1.data:1:1,v1.command:1:1"
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
         networks:
             - dockernet
+        depends_on:
+            - zookeeper
 
 networks:
     dockernet:

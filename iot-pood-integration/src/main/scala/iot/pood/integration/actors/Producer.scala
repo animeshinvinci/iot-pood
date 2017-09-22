@@ -7,6 +7,7 @@ import cakesolutions.kafka.akka.{KafkaProducerActor, ProducerRecords}
 import cakesolutions.kafka.{KafkaProducer, KafkaProducerRecord}
 import com.typesafe.config.Config
 import iot.pood.base.actors.BaseActor
+import iot.pood.base.integration.IntegrationConfig.{IntegrationConfig, IntegrationProperty}
 import iot.pood.base.messages.integration.IntegrationMessages.CommandMessages.CommandMessage
 import org.apache.kafka.common.serialization.{Serializer, StringSerializer}
 import iot.pood.base.messages.integration.IntegrationMessages.DataMessages._
@@ -51,17 +52,17 @@ object Producer extends IntegrationComponent{
   }
 
 
-  def props(): Props = {
-    val dataConfig = component(DATA)
-    val commandConfig = component(COMMAND)
-    Props(new ProducerActor(integration,dataConfig,commandConfig))
+  def props(integrationConfig: IntegrationConfig): Props = {
+    val dataConfig = integrationConfig.get(DATA)
+    val commandConfig = integrationConfig.get(COMMAND)
+    Props(new ProducerActor(integrationConfig.componentConfig,dataConfig,commandConfig))
   }
 
 
 }
 
- class ProducerActor(config: Config,dataConfig: IntegrationConfigProperty,
-                                   commandConfig: IntegrationConfigProperty) extends BaseActor{
+ class ProducerActor(config: Config, dataConfig: IntegrationProperty,
+                     commandConfig: IntegrationProperty) extends BaseActor{
 
     import Producer.KafkaProtocol._
     import Producer.PublishProtocol._

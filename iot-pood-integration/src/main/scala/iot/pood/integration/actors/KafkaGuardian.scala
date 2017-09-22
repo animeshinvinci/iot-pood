@@ -4,12 +4,12 @@ import akka.actor.Actor.Receive
 import com.typesafe.config.{Config, ConfigFactory}
 import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import iot.pood.base.actors.BaseActor
-import iot.pood.integration.json.integration.JsonIntegrationMessages._
+import iot.pood.base.integration.IntegrationConfig.IntegrationConfig
 
 /**
   * Created by rafik on 31.7.2017.
   */
-object IntegrationGuardian extends IntegrationConfig{
+object IntegrationGuardian {
 
   val NAME = "INTEGRATION"
 
@@ -33,20 +33,20 @@ object IntegrationGuardian extends IntegrationConfig{
   }
 
 
-  def props(): Props = Props(new KafkaGuardianActor(config))
+  def props(integrationConfig: IntegrationConfig): Props = Props(new KafkaGuardianActor(integrationConfig))
 
 }
 
-class KafkaGuardianActor(config: Config) extends BaseActor {
+class KafkaGuardianActor(integrationConfig: IntegrationConfig) extends BaseActor {
 
   import IntegrationGuardian.RegisterMessages._
   import Consumer.SubscribeMessage._
 
-  val dataConsumer = context.actorOf(Consumer.propsData,Consumer.DATA)
+  val dataConsumer = context.actorOf(Consumer.propsData(integrationConfig),Consumer.DATA)
 
-  val commandConsumer = context.actorOf(Consumer.propsCommand,Consumer.COMMAND)
+  val commandConsumer = context.actorOf(Consumer.propsCommand(integrationConfig),Consumer.COMMAND)
 
-  val producer = context.actorOf(Producer.props(),Producer.NAME)
+  val producer = context.actorOf(Producer.props(integrationConfig),Producer.NAME)
 
 
   override def receive: Receive = {

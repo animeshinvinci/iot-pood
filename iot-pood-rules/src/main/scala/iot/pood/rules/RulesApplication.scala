@@ -7,6 +7,10 @@ import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.dispatch.MonitorableThreadFactory
 import com.typesafe.config.ConfigFactory
 import iot.pood.base.actors.BaseActor
+import iot.pood.base.config.Configuration
+import iot.pood.base.http.HttpConfig
+import iot.pood.base.integration.IntegrationConfig
+import iot.pood.base.log.Log
 import iot.pood.base.messages.integration.IntegrationMessages.CommandMessages.CommandMessage
 import iot.pood.base.messages.integration.IntegrationMessages.DataMessages._
 import iot.pood.base.utils.RequestUniqueCreator
@@ -20,21 +24,23 @@ import scala.io.StdIn
 /**
   * Created by rafik on 6.6.2017.
   */
-object RulesApplication extends App with RequestUniqueCreator{
+object RulesApplication extends App with Log{
 
-  val config = ConfigFactory.load();
+  log.info("Application RULES start")
+  Configuration.init()
+  val httpConfig = HttpConfig.httpConfig(Configuration.appConfig)
+  val integrationConfig = IntegrationConfig(Configuration.appConfig)
   val system = ActorSystem()
+  val guardian = system.actorOf(IntegrationGuardian.props(integrationConfig))
 
-  val guardian = system.actorOf(IntegrationGuardian.props())
   val subscribe = system.actorOf(Subscribe.props(guardian),Subscribe.NAME)
   val listener = system.actorOf(Listener.props(guardian),"listener")
-  Runtime.getRuntime.addShutdownHook(new ShutDownHookThread)
-  class ShutDownHookThread extends Thread {
-    override def run() = {
-      println("Application shutdown")
-      system.terminate()
-    }
-  }
+  log.info("Press ANY key to stop...")
+  StdIn.readLine()
+  system.terminate()
+  log.info("Application RULES stop")
+
+
 }
 
 

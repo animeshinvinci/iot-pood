@@ -7,7 +7,7 @@ import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
 import iot.pood.base.config.Configuration
-import iot.pood.base.http.BaseHttp
+import iot.pood.base.http.HttpConfig
 import iot.pood.base.log.Log
 import iot.pood.service.rest.ApiV1
 
@@ -20,7 +20,7 @@ import scala.io.StdIn
 object ServiceApplication extends App with ApiV1 with Log{
 
   Configuration.init()
-  val httpConfig = BaseHttp.httpConfig(Configuration.appConfig)
+  val httpConfig = HttpConfig.httpConfig(Configuration.appConfig)
 
   implicit val system = ActorSystem()
   implicit val materializer = ActorMaterializer()

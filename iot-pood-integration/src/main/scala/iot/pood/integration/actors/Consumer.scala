@@ -9,6 +9,7 @@ import cakesolutions.kafka.akka.KafkaConsumerActor.{Confirm, Subscribe, Unsubscr
 import cakesolutions.kafka.akka.{ConsumerRecords, Extractor, KafkaConsumerActor}
 import com.typesafe.config.Config
 import iot.pood.base.actors.BaseActor
+import iot.pood.base.integration.IntegrationConfig.{IntegrationConfig, IntegrationProperty}
 import iot.pood.base.messages.integration.IntegrationMessages.CommandMessages.CommandMessage
 import org.apache.kafka.clients.consumer.OffsetResetStrategy
 import org.apache.kafka.common.serialization.{Deserializer, Serializer, StringDeserializer}
@@ -22,7 +23,7 @@ import scala.reflect.runtime.universe._
 /**
   * Created by rafik on 31.7.2017.
   */
-object Consumer extends IntegrationConfig{
+object Consumer{
 
   val DATA = "data";
   val COMMAND = "command";
@@ -46,22 +47,28 @@ object Consumer extends IntegrationConfig{
 
   }
   //data
-  def propsData: Props = props[DataMessage](DATA,new SimpleStringDeserializer[DataMessage])
+  def propsData(integrationConfig: IntegrationConfig): Props = props[DataMessage](integrationConfig,
+                                                              DATA,new SimpleStringDeserializer[DataMessage])
 
   //command
-  def propsCommand: Props = props[CommandMessage](COMMAND,new SimpleStringDeserializer[CommandMessage])
+  def propsCommand(integrationConfig: IntegrationConfig): Props = props[CommandMessage](integrationConfig,
+                                                              COMMAND,new SimpleStringDeserializer[CommandMessage])
 
 
-  private def props[T: TypeTag](name: String, deserializer: Deserializer[T]) = {
-    val consumer = component(name)
+  private def props[T: TypeTag](integrationConfig: IntegrationConfig,
+                                name: String, deserializer: Deserializer[T]) = {
+    val consumer = integrationConfig.get(name)
     val kafkaConsumerConf = KafkaConsumer.Conf(
       new StringDeserializer,
       deserializer,
       bootstrapServers = consumer.servers,
-      groupId = consumer.groupId,
+      groupId = consumer.groupId match {
+        case None => null
+        case Some(v) => v
+      },
       enableAutoCommit = consumer.autoCommit,
       autoOffsetReset = OffsetResetStrategy.LATEST)
-      .withConf(config)
+      .withConf(integrationConfig.appConfig)
     val actorConf = KafkaConsumerActor.Conf(1.seconds, 3.seconds)
     Props(new ConsumerActor[T](consumer,kafkaConsumerConf,actorConf))
   }
@@ -69,7 +76,7 @@ object Consumer extends IntegrationConfig{
 }
 
 
-class ConsumerActor[T: TypeTag](consumerConfig: IntegrationConfigProperty,
+class ConsumerActor[T: TypeTag](configuration: IntegrationProperty,
                                 kafkaConfig: KafkaConsumer.Conf[String, T],
                                 actorConfig: KafkaConsumerActor.Conf) extends BaseActor {
 
@@ -82,7 +89,7 @@ class ConsumerActor[T: TypeTag](consumerConfig: IntegrationConfigProperty,
   )
   protected val extractor = ConsumerRecords.extractor[String, T]
 
-  consumer ! Subscribe.AutoPartition(Set(consumerConfig.topic))
+  consumer ! Subscribe.AutoPartition(Set(configuration.topic))
 
   override def receive = {
 
@@ -97,7 +104,6 @@ class ConsumerActor[T: TypeTag](consumerConfig: IntegrationConfigProperty,
       sender()! ListenerUnSubscribed(m.messageId)
     }
     case extractor(data) =>{
-      log.info("Server: {}",consumerConfig.servers)
       data.records.forEach(r =>{
         listeners.foreach(l => {
           log.info("Publish for actor: {} value: {}",l,r.value())

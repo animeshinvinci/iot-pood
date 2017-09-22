@@ -10,9 +10,9 @@ import scala.util.{Failure, Success, Try}
 /**
   * Created by rafik on 21.9.2017.
   */
-object BaseHttp extends Log{
+object HttpConfig extends Log{
 
-  object HttpConfig {
+  object HttpConstants {
 
     val MAIN = "http"
     val HOST = "host"
@@ -23,11 +23,11 @@ object BaseHttp extends Log{
 
   def httpConfig(config: Config) = {
     Try({
-      val http = config.getConfig(HttpConfig.MAIN)
-      val versions = http.getStringList(HttpConfig.API_VERSIONS).asScala.toList
-      HttpConfig(http.getString(HttpConfig.HOST),
-        http.getInt(HttpConfig.PORT),
-        http.getString(HttpConfig.API_URL),
+      val http = config.getConfig(HttpConstants.MAIN)
+      val versions = http.getStringList(HttpConstants.API_VERSIONS).asScala.toList
+      HttpConfig(http.getString(HttpConstants.HOST),
+        http.getInt(HttpConstants.PORT),
+        http.getString(HttpConstants.API_URL),
         versions,
         apiConfig(versions,http)
         )
@@ -55,8 +55,8 @@ object BaseHttp extends Log{
     Map(names map { name => (name,config.getConfig(name))} : _*)
   }
 
-  case class HttpConfig(host: String, port: Int,apiUrl: String,apiVersions: List[String],
-                        apiConfig: Map[String,Config])
+  case class HttpConfig(host: String, port: Int, apiUrl: String, apiVersions: List[String],
+                           apiConfig: Map[String,Config])
 
 
 
