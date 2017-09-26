@@ -81,11 +81,11 @@ object Producer extends IntegrationComponent{
 
   override def receive: Receive = {
     case m:PublishData => {
-        dataProducerActor ! ProducerRecords.fromValuesWithKey(dataConfig.topic,Some(""),Seq(m.data),
+        dataProducerActor ! ProducerRecords.fromValuesWithKey(dataConfig.topic,Some("test_data_key"),Seq(m.data),
           Some(DataOk(m.messageId,m.actorRef)),Some(DataError(m.messageId,m.actorRef)))
       }
     case m:PublishCommand =>{
-        commandProducerActor ! ProducerRecords.fromValuesWithKey(commandConfig.topic,Some(""),Seq(m.command),
+        commandProducerActor ! ProducerRecords.fromValuesWithKey(commandConfig.topic,Some("test_comand_key"),Seq(m.command),
           Some(DataOk(m.messageId,m.actorRef)),Some(DataError(m.messageId,m.actorRef)))
     }
     case m:DataOk => {

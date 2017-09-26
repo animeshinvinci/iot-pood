@@ -1,7 +1,6 @@
 import sbt._
 
 
-
 lazy val util = (project in file("iot-pood-util"))
     .settings(Common.settings: _*)
     .settings(libraryDependencies ++= Dependencies.baseDependencies)
@@ -39,7 +38,7 @@ lazy val storage = (project in file("iot-pood-storage"))
   .settings(Common.settings: _*)
   .settings(libraryDependencies ++=Dependencies.storageDependencies)
   .enablePlugins(sbtdocker.DockerPlugin)
-  .dependsOn(util,base)
+  .dependsOn(util,base,integration)
 
 lazy val root = (project in file(".")).
   aggregate(base,util,service,integration,mqtt,storage,rules)

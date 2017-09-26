@@ -104,6 +104,9 @@ class ConsumerActor[T: TypeTag](configuration: IntegrationProperty,
       sender()! ListenerUnSubscribed(m.messageId)
     }
     case extractor(data) =>{
+      data.pairs.foreach(p =>{
+        log.info("Pair 1: {} 2: {}",p._1,p._2)
+      })
       data.records.forEach(r =>{
         listeners.foreach(l => {
           log.info("Publish for actor: {} value: {}",l,r.value())

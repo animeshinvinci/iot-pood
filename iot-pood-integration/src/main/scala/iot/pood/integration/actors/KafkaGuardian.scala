@@ -11,7 +11,7 @@ import iot.pood.base.integration.IntegrationConfig.IntegrationConfig
   */
 object IntegrationGuardian {
 
-  val NAME = "INTEGRATION"
+  val NAME = "integration"
 
   sealed trait IntegrationMessage{
     def messageId: Long
