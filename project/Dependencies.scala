@@ -68,7 +68,7 @@ object Dependencies {
 
 
   val utilDependencies          :Seq[ModuleID] = commonDependencies ++ jsonDependencies
-  val baseDependencies          :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ jsonDependencies
+  val baseDependencies          :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ jsonDependencies  ++ akkaHttpDependencies
   val serviceDependencies       :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ akkaHttpDependencies
   val storageDependencies       :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ phantomDependencies
   val integrationDependencies   :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ kafkaDependencies ++ utilDependencies

@@ -14,7 +14,7 @@ import spray.json._
   */
 object JsonIntegrationMessages extends DefaultJsonProtocol with NullOptions {
 
-  import DateMarshalling._
+  import iot.pood.base.json.marshaling.DateMarshalling._
 
   implicit val dataDeviceMessageFormat = jsonFormat2(DataDeviceMessage)
   implicit val dataDeviceStateMessageFormat = jsonFormat1(DataDeviceStateMessage)

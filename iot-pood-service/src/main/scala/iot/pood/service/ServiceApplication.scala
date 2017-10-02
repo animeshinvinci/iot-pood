@@ -4,6 +4,7 @@ import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{StatusCode, StatusCodes}
 import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.{Route, StandardRoute}
 import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
 import iot.pood.base.config.Configuration
@@ -29,7 +30,10 @@ object ServiceApplication extends App with ApiV1 with Log{
 
   log.info("Start server HOST: {}:{} ",httpConfig.host,httpConfig.port)
   log.info("HTTP configuration: {}",httpConfig)
-  val bindingFuture = Http().bindAndHandle(apiV1Route, httpConfig.host,httpConfig.port)
+
+  val apis = List(apiV1Route,apiV3Route)
+  val mainRoute = joinRoute(apis)
+  val bindingFuture = Http().bindAndHandle(mainRoute, httpConfig.host,httpConfig.port)
   log.info("Press any key to stop...")
   StdIn.readLine()
   bindingFuture
@@ -38,4 +42,10 @@ object ServiceApplication extends App with ApiV1 with Log{
       log.info("Terminate ActorSystem")
       system.terminate()
       })
+
+
+  def joinRoute(routes: List[Route]): Route = routes match {
+        case List(last) => last
+        case head :: tail => head ~ joinRoute(tail)
+  }
 }

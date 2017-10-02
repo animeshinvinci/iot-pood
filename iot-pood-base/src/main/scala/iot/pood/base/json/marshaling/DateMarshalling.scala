@@ -1,4 +1,4 @@
-package iot.pood.integration.json.integration
+package iot.pood.base.json.marshaling
 
 import java.text.SimpleDateFormat
 import java.util.Date
