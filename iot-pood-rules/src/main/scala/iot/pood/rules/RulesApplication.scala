@@ -4,14 +4,14 @@ import java.time.Duration
 import java.util.Calendar
 
 import akka.actor.{ActorRef, ActorSystem, Props}
-import iot.pood.base.config.Configuration
-import iot.pood.base.http.HttpConfig
+import iot.pood.base.config.{Configuration, HttpConfig}
 import iot.pood.base.integration.IntegrationConfig
 import iot.pood.base.log.Log
 import iot.pood.base.messages.integration.ComponentMessages.{GetIntegrationComponentRequest, GetIntegrationComponentResponse}
 import iot.pood.integration.actors.IntegrationGuardian.RegisterMessages.{ProducerRequest, ProducerSend, RegisterDataListener}
 import iot.pood.integration.util.{SimpleCommandUtilPublisher, SimpleDataUtilPublisher}
 import iot.pood.rules.actor.RulesAppGuardian
+
 import scala.io.StdIn
 /**
   * Created by rafik on 6.6.2017.

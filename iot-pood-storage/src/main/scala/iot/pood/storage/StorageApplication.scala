@@ -3,8 +3,7 @@ package iot.pood.storage
 import java.util.Calendar
 
 import akka.actor.{ActorRef, ActorSystem, Props}
-import iot.pood.base.config.Configuration
-import iot.pood.base.http.HttpConfig
+import iot.pood.base.config.{Configuration, HttpConfig}
 import iot.pood.base.integration.IntegrationConfig
 import iot.pood.base.log.Log
 import iot.pood.base.messages.integration.ComponentMessages.{GetIntegrationComponentRequest, GetIntegrationComponentResponse}

@@ -1,10 +1,10 @@
-package iot.pood.base.http
+package iot.pood.base.config
 
 import com.typesafe.config.Config
 import iot.pood.base.exception.Exceptions.IncorrectConfigurationException
 import iot.pood.base.log.Log
-import scala.collection.JavaConverters._
 
+import scala.collection.JavaConverters._
 import scala.util.{Failure, Success, Try}
 
 /**
@@ -58,6 +58,6 @@ object HttpConfig extends Log{
   case class HttpConfig(host: String, port: Int, apiUrl: String, apiVersions: List[String],
                            apiConfig: Map[String,Config])
 
-
+  case class HttpApiPrefix(mainUrl: String, version: String)
 
 }
