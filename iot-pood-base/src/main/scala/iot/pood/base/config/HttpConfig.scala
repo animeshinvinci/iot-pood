@@ -51,6 +51,7 @@ object HttpConfig extends Log{
     }
   }
 
+
   private def apiConfig(names: List[String],config: Config) = {
     Map(names map { name => (name,config.getConfig(name))} : _*)
   }
