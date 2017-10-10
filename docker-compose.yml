@@ -16,6 +16,20 @@ services:
                 ipv4_address: 172.16.2.10
         depends_on:
             - kafka
+    engine:
+        image: engine:1.0
+        expose:
+            - "8085"
+            - "9000"
+        ports:
+            - "8085:8085"
+        stdin_open: true
+        restart: always
+        networks:
+              dockernet:
+                  ipv4_address: 172.16.2.11
+        depends_on:
+            - kafka
     service:
         image: service:1.0
         expose:
@@ -27,7 +41,7 @@ services:
         restart: always
         networks:
             dockernet:
-                ipv4_address: 172.16.2.11
+                ipv4_address: 172.16.2.12
         depends_on:
             - kafka
     rules:
@@ -41,7 +55,7 @@ services:
         restart: always
         networks:
             dockernet:
-                ipv4_address: 172.16.2.12
+                ipv4_address: 172.16.2.13
         depends_on:
             - kafka
 
@@ -56,7 +70,22 @@ services:
         restart: always
         networks:
             dockernet:
-                ipv4_address: 172.16.2.13
+                ipv4_address: 172.16.2.14
+        depends_on:
+            - kafka
+
+    management:
+        image: management:1.0
+        expose:
+            - "8086"
+            - "9000"
+        ports:
+            - "8086:8086"
+        stdin_open: true
+        restart: always
+        networks:
+            dockernet:
+                ipv4_address: 172.16.2.14
         depends_on:
             - kafka
 

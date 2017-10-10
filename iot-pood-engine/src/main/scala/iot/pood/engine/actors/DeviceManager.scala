@@ -1,8 +1,6 @@
-package iot.pood.service.actors
+package iot.pood.engine.actors
 
-import akka.actor.Actor.Receive
 import akka.actor.{Actor, ActorLogging, ActorRef, Props, Terminated}
-import DeviceManager._
 
 /**
   * Device manager. Handle registering device group and device
@@ -30,6 +28,8 @@ object DeviceManager {
 }
 
 class DeviceManagerActor extends Actor with ActorLogging{
+
+  import DeviceManager._
 
   var groupIdToActor = Map.empty[String,ActorRef]
   var actorToGroupId = Map.empty[ActorRef,String]

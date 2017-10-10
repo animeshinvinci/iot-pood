@@ -70,8 +70,10 @@ object Dependencies {
   val utilDependencies          :Seq[ModuleID] = commonDependencies ++ jsonDependencies
   val baseDependencies          :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ jsonDependencies  ++ akkaHttpDependencies
   val serviceDependencies       :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ akkaHttpDependencies
+  val engineDependencies        :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ akkaHttpDependencies
   val storageDependencies       :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ phantomDependencies
   val integrationDependencies   :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ kafkaDependencies ++ utilDependencies
   val iotMessagingDependencies  :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ mqttDependencies ++ kafkaDependencies
   val rulesEngineDependencies   :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ kafkaDependencies
+  val managementDependencies    :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ akkaHttpDependencies
 }

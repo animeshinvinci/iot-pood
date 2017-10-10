@@ -1,4 +1,4 @@
-package iot.pood.service.actors
+package iot.pood.engine.actors
 
 import akka.actor.{Actor, ActorLogging, ActorRef, Props, Terminated}
 

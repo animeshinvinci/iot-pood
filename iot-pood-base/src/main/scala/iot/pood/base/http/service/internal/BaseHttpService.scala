@@ -10,4 +10,4 @@ import scala.concurrent.duration.Duration
 /**
   * Created by rafik on 3.10.2017.
   */
-abstract class BaseHttpService(serviceWorker: ActorRef)(implicit executorContext: ExecutionContext) extends ApiVersionService
+abstract class BaseHttpService(implicit executorContext: ExecutionContext) extends ApiVersionService

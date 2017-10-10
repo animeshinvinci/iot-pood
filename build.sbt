@@ -34,13 +34,26 @@ lazy val service = (project in file("iot-pood-service"))
     .enablePlugins(sbtdocker.DockerPlugin)
     .dependsOn(util,base,integration)
 
+lazy val engine = (project in file("iot-pood-engine"))
+  .settings(Common.settings: _*)
+  .settings(libraryDependencies ++= Dependencies.serviceDependencies)
+  .enablePlugins(sbtdocker.DockerPlugin)
+  .dependsOn(util,base,integration)
+
 lazy val storage = (project in file("iot-pood-storage"))
   .settings(Common.settings: _*)
   .settings(libraryDependencies ++=Dependencies.storageDependencies)
   .enablePlugins(sbtdocker.DockerPlugin)
   .dependsOn(util,base,integration)
 
+lazy val management = (project in file("iot-pood-management"))
+  .settings(Common.settings: _*)
+  .settings(libraryDependencies ++=Dependencies.managementDependencies)
+  .enablePlugins(sbtdocker.DockerPlugin)
+  .dependsOn(util,base,integration)
+
+
 lazy val root = (project in file(".")).
-  aggregate(base,util,service,integration,mqtt,storage,rules)
+  aggregate(base,util,engine,service,integration,mqtt,storage,management,rules)
 
 

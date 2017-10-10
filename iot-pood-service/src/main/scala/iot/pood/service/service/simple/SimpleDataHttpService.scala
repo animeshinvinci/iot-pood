@@ -23,7 +23,7 @@ object SimpleDataHttpService extends Log{
   }
 }
 
-class SimpleDataHttpService(serviceWorker: ActorRef)(implicit executorContext: ExecutionContext) extends BaseHttpService(serviceWorker)
+class SimpleDataHttpService(serviceWorker: ActorRef)(implicit executorContext: ExecutionContext) extends BaseHttpService
   with ApiV1{
 
   override def route: Route = join(switchState,numberValue)

@@ -1,8 +1,9 @@
 package iot.pood.service.actors
 
 import akka.testkit.TestProbe
-import iot.pood.service.actors.Device.{DataRecorded, ReadData, ReadDataResponse, RecordData}
-import iot.pood.service.actors.DeviceManager.{DeviceRegistered, RequestRegisterDevice}
+import iot.pood.engine.actors.Device
+import iot.pood.engine.actors.Device.{DataRecorded, ReadData, ReadDataResponse, RecordData}
+import iot.pood.engine.actors.DeviceManager.{DeviceRegistered, RequestRegisterDevice}
 import iot.pood.service.base.BaseActorTest
 
 /**

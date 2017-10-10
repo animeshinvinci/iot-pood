@@ -1,9 +1,6 @@
-package iot.pood.service.actors
+package iot.pood.engine.actors
 
-import akka.actor.Actor.Receive
 import akka.actor.{Actor, ActorLogging, ActorRef, Props}
-import DeviceManager._
-import iot.pood.service.actors.DeviceGroup._
 
 import scala.concurrent.duration.DurationLong
 
@@ -30,6 +27,9 @@ object DeviceGroup {
 }
 
 class DeviceGroupActor(groupId: String) extends Actor with ActorLogging{
+
+  import DeviceManager._
+  import DeviceGroup._
 
   var deviceIdToActor = Map.empty[String,ActorRef]
   var actorToDeviceId = Map.empty[ActorRef, String]

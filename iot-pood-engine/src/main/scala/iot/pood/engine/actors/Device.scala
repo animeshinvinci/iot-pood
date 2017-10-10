@@ -1,9 +1,7 @@
-package iot.pood.service.actors
+package iot.pood.engine.actors
 
-import akka.actor.Actor.Receive
 import akka.actor.{Actor, ActorLogging, Props}
-import DeviceManager._
-import Device._
+import iot.pood.engine.actors.DeviceManager.RequestRegisterDevice
 /**
   * Factory and messages send to device actor
   *
@@ -34,6 +32,10 @@ object Device {
   * @param deviceId
   */
 class DeviceActor(groupId:String ,deviceId:String) extends Actor with ActorLogging {
+
+  import Device._
+  import DeviceGroup._
+  import DeviceManager._
 
   var actualValue: Option[String] = None
 
