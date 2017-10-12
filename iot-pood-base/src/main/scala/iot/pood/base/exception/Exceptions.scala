@@ -9,4 +9,9 @@ object Exceptions {
 
   case class IncorrectConfigurationException(message: String) extends RuntimeException(message)
 
+
+  case class UnauthorizedException(message: String) extends RuntimeException(message)
+
+  case class AuthenticationFailException(message: String) extends RuntimeException(message)
+
 }

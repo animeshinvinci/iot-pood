@@ -19,6 +19,8 @@ object Dependencies {
     val sprayJson = "1.3.3"
     val mqttVersion = "21d5ff44+20161107-1333"
     val jodaTime = "2.16.0"
+
+    val jwt       = "0.4.5"
   }
 
 
@@ -26,7 +28,6 @@ object Dependencies {
 
   val commonDependencies      :Seq[ModuleID] = Seq(
     "org.scalatest"   %%  "scalatest"   %   Versions.scalaTest   % "test",
-//    "com.typesafe"    %% "config"       %   Versions.safeConfig,
     logback,
     "org.scala-lang" % "scala-reflect" % "2.12.0",
     "com.github.nscala-time" %% "nscala-time" % Versions.jodaTime
@@ -35,6 +36,10 @@ object Dependencies {
   val jsonDependencies        :Seq[ModuleID] = Seq(
     "io.spray"         %%  "spray-json" %   Versions.sprayJson
   )
+
+  val securityException       :Seq[ModuleID] = Seq{
+    "com.jason-goodwin" %% "authentikat-jwt" % Versions.jwt
+  }
 
   // akka dependencies
   val akkaDependencies        :Seq[ModuleID] = Seq(
@@ -66,14 +71,19 @@ object Dependencies {
     "net.cakesolutions"   %% "scala-kafka-client-testkit" % Versions.kafkaClient % "test"
   )
 
+  val testDependencies        :Seq[ModuleID] = Seq(
+    "org.scalactic" %% "scalactic" % "3.0.1",
+    "org.scalatest" %% "scalatest" % "3.0.1" % "test"
+  )
+
 
   val utilDependencies          :Seq[ModuleID] = commonDependencies ++ jsonDependencies
-  val baseDependencies          :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ jsonDependencies  ++ akkaHttpDependencies
+  val baseDependencies          :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ jsonDependencies ++ akkaHttpDependencies ++ testDependencies
   val serviceDependencies       :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ akkaHttpDependencies
   val engineDependencies        :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ akkaHttpDependencies
   val storageDependencies       :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ phantomDependencies
   val integrationDependencies   :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ kafkaDependencies ++ utilDependencies
   val iotMessagingDependencies  :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ mqttDependencies ++ kafkaDependencies
   val rulesEngineDependencies   :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ kafkaDependencies
-  val managementDependencies    :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ akkaHttpDependencies
+  val managementDependencies    :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ akkaHttpDependencies ++ securityException
 }
