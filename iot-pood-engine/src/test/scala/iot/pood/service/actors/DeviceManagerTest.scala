@@ -3,7 +3,7 @@ package iot.pood.service.actors
 import akka.actor.ActorSystem
 import akka.testkit.{ImplicitSender, TestActors, TestKit, TestProbe}
 import cakesolutions.kafka.akka.KafkaProducerActor.Matcher
-import iot.pood.service.base.BaseActorTest
+import iot.pood.base.actors.BaseActorTest
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 
 /**

@@ -14,4 +14,5 @@ object Exceptions {
 
   case class AuthenticationFailException(message: String) extends RuntimeException(message)
 
+  case class TokenExpiredFailException(message: String) extends RuntimeException(message)
 }

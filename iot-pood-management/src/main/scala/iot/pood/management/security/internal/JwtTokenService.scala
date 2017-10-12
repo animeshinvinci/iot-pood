@@ -4,7 +4,7 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 import authentikat.jwt.{JsonWebToken, JwtClaimsSet}
-import iot.pood.base.exception.Exceptions.AuthenticationFailException
+import iot.pood.base.exception.Exceptions.{AuthenticationFailException, TokenExpiredFailException}
 import iot.pood.base.log.Log
 import iot.pood.base.model.security.SecurityMessages.{JwtToken, Token}
 import iot.pood.base.model.user.UserMessages.{SimpleUser, User}
@@ -20,7 +20,7 @@ object JwtTokenService {
 
   def apply(securityConfig: SecurityConfig): JwtTokenService = new JwtTokenService(securityConfig)
 
-  class JwtTokenService(securityConfig: SecurityConfig) extends TokenService with Log{
+  class JwtTokenService(securityConfig: SecurityConfig) extends TokenService[JwtToken] with Log{
 
 
     override def parse(token: String): User = getClaims(token) match {
@@ -37,19 +37,19 @@ object JwtTokenService {
           }
           case (Some(expiration),_) if !isExpirationValid(expiration.toLong) => {
             log.error("Token expired")
-            throw new AuthenticationFailException("Token expired !!!")
+            throw new TokenExpiredFailException("Token expired !!!")
           }
         }
       }
       case None => throw new AuthenticationFailException("Claims is not presented !!!")
     }
 
-    override def create(user: User): Token = {
+    override def create(user: User): JwtToken = {
         val jwt = JsonWebToken(securityConfig.header,
                     createClaims(user,securityConfig),
           securityConfig.secretKey
         )
-      JwtToken(jwt,securityConfig.expirationInMinutes,UUID.randomUUID().toString)
+      JwtToken(jwt,securityConfig.expiration.toMinutes.toInt,UUID.randomUUID().toString)
     }
 
 
@@ -60,7 +60,7 @@ object JwtTokenService {
 
     private def createClaims(user: User,securityConfig: SecurityConfig) = JwtClaimsSet{
       Map(USER -> user.id,
-        EXPIRED_AT -> (System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(securityConfig.expirationInMinutes.toLong)))
+        EXPIRED_AT -> (System.currentTimeMillis() + securityConfig.expiration.toMillis))
     }
 
     private def isExpirationValid(expiration: Long) = expiration > System.currentTimeMillis()

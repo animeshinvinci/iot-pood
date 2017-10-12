@@ -2,8 +2,8 @@ package iot.pood.service.actors
 
 import akka.actor.PoisonPill
 import akka.testkit.TestProbe
+import iot.pood.base.actors.BaseActorTest
 import iot.pood.engine.actors.{Device, DeviceGroup, DeviceManager}
-import iot.pood.service.base.BaseActorTest
 
 /**
   * Created by rafik on 20.7.2017.

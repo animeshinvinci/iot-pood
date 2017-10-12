@@ -8,5 +8,5 @@ import org.scalatest.{FlatSpec, Matchers}
 abstract class BaseTest extends FlatSpec with Matchers {
   import org.scalatest._
   import Matchers._
-
+  import scala.concurrent.duration._
 }
