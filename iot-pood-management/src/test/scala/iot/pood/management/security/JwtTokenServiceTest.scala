@@ -10,6 +10,7 @@ import iot.pood.management.security.internal.JwtTokenService
 
 import scala.concurrent.duration
 import scala.concurrent.duration.Duration
+import scala.util.{Failure, Success}
 
 /**
   * Created by rafik on 12.10.2017.
@@ -28,8 +29,13 @@ class JwtTokenServiceTest extends BaseTest{
     token match {
       case JwtToken(jwt,_,_) => {
         val simpleUser = service.parse(jwt)
-        simpleUser shouldBe a [SimpleUser]
-        simpleUser.id should equal ("123")
+        simpleUser match {
+          case Success(user)=> {
+            user shouldBe a [SimpleUser]
+            user.id should equal ("123")
+          }
+          case Failure(_) =>
+        }
       }
     }
   }
