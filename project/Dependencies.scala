@@ -21,6 +21,8 @@ object Dependencies {
     val jodaTime = "2.16.0"
 
     val jwt       = "0.4.5"
+
+    val mongo     = "0.12.7"
   }
 
 
@@ -76,6 +78,10 @@ object Dependencies {
     "org.scalatest" %% "scalatest" % "3.0.1" % "test"
   )
 
+  val mongoDependencies       :Seq[ModuleID] = Seq(
+    "org.reactivemongo" %% "reactivemongo" % Versions.mongo
+  )
+
 
   val utilDependencies          :Seq[ModuleID] = commonDependencies ++ jsonDependencies
   val baseDependencies          :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ jsonDependencies ++ akkaHttpDependencies ++ testDependencies
@@ -85,5 +91,5 @@ object Dependencies {
   val integrationDependencies   :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ kafkaDependencies ++ utilDependencies
   val iotMessagingDependencies  :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ mqttDependencies ++ kafkaDependencies
   val rulesEngineDependencies   :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ kafkaDependencies
-  val managementDependencies    :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ akkaHttpDependencies ++ securityException
+  val managementDependencies    :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ akkaHttpDependencies ++ securityException ++ mongoDependencies
 }
