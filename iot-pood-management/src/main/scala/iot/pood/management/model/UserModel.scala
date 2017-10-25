@@ -40,13 +40,13 @@ object UserModel {
   }
 
   trait TokenConverter {
-    implicit def tokenWriter = Macros.writer[Token]
-    implicit def tokenReader = Macros.reader[Token]
+    implicit def tokenWriter:BSONDocumentWriter[Token] = Macros.writer[Token]
+    implicit def tokenReader:BSONDocumentReader[Token] = Macros.reader[Token]
   }
 
   trait LogConverter {
-    implicit def logWriter = Macros.writer[LogRecord]
-    implicit def logReader = Macros.reader[LogRecord]
+    implicit def logWriter:BSONDocumentWriter[LogRecord] = Macros.writer[LogRecord]
+    implicit def logReader:BSONDocumentReader[LogRecord] = Macros.reader[LogRecord]
   }
 
 

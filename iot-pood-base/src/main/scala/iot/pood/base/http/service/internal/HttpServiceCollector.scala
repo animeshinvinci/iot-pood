@@ -53,9 +53,11 @@ object HttpServiceCollector{
   private[this] val defaultExceptionHandler: ExceptionHandler = ExceptionHandler {
     case _: Exception =>
       extractUri { uri =>
-        println(s"Request to $uri could not be handled normally")
-        complete(HttpResponse(StatusCodes.InternalServerError, entity = "Bad numbers, bad result!!!"))
-      }
+        extractRequest { r =>
+          println(s"Request to $uri could not be handled normally")
+          complete(HttpResponse(StatusCodes.InternalServerError, entity = "Bad numbers, bad result!!!"))
+        }
+    }
   }
 
 

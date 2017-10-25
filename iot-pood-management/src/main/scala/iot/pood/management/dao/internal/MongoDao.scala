@@ -1,9 +1,7 @@
 package iot.pood.management.dao.internal
 
 import iot.pood.management.dao.Dao
-import iot.pood.management.dao.Results.{DaoResult, ErrorDaoResult, SuccessDaoResult}
 import iot.pood.management.dao.connector.MongoDb
-import iot.pood.management.model.BaseModel.ModelConverter
 import reactivemongo.api.collections.bson.BSONCollection
 import reactivemongo.api.commands.WriteResult
 import reactivemongo.bson.{BSONDocumentReader, BSONDocumentWriter, BSONObjectID}

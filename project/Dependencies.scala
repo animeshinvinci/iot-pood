@@ -23,17 +23,22 @@ object Dependencies {
     val jwt       = "0.4.5"
 
     val mongo     = "0.12.7"
+    val enumerator = "1.5.12"
   }
 
 
   val logback   = "ch.qos.logback" % "logback-classic" % Versions.logback
 
+  val enumerator =  "com.beachape" %% "enumeratum" % Versions.enumerator
+
   val commonDependencies      :Seq[ModuleID] = Seq(
     "org.scalatest"   %%  "scalatest"   %   Versions.scalaTest   % "test",
     logback,
+    enumerator,
     "org.scala-lang" % "scala-reflect" % "2.12.0",
     "com.github.nscala-time" %% "nscala-time" % Versions.jodaTime
   )
+
 
   val jsonDependencies        :Seq[ModuleID] = Seq(
     "io.spray"         %%  "spray-json" %   Versions.sprayJson
@@ -79,7 +84,8 @@ object Dependencies {
   )
 
   val mongoDependencies       :Seq[ModuleID] = Seq(
-    "org.reactivemongo" %% "reactivemongo" % Versions.mongo
+    "org.reactivemongo" %% "reactivemongo" % Versions.mongo,
+    "com.beachape" %% "enumeratum-reactivemongo-bson" % Versions.enumerator
   )
 
 

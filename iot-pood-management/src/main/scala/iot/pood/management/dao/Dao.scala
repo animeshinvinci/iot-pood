@@ -1,6 +1,5 @@
 package iot.pood.management.dao
 
-import iot.pood.management.dao.Results.DaoResult
 import reactivemongo.api.commands.WriteResult
 
 import scala.concurrent.Future
