@@ -24,6 +24,8 @@ object Dependencies {
 
     val mongo     = "0.12.7"
     val enumerator = "1.5.12"
+
+    val validator = "0.7.1"
   }
 
 
@@ -37,6 +39,11 @@ object Dependencies {
     enumerator,
     "org.scala-lang" % "scala-reflect" % "2.12.0",
     "com.github.nscala-time" %% "nscala-time" % Versions.jodaTime
+  )
+
+  val validator               :Seq[ModuleID] = Seq(
+    "com.wix" %% "accord-core" % Versions.validator,
+    "org.scala-lang" % "scala-compiler" % "2.12.0" % "provided"
   )
 
 
@@ -97,5 +104,5 @@ object Dependencies {
   val integrationDependencies   :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ kafkaDependencies ++ utilDependencies
   val iotMessagingDependencies  :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ mqttDependencies ++ kafkaDependencies
   val rulesEngineDependencies   :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ kafkaDependencies
-  val managementDependencies    :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ akkaHttpDependencies ++ securityException ++ mongoDependencies
+  val managementDependencies    :Seq[ModuleID] =  commonDependencies ++ akkaDependencies ++ akkaHttpDependencies ++ securityException ++ mongoDependencies ++ validator
 }

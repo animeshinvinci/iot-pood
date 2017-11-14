@@ -19,13 +19,13 @@ trait DeviceDaoRepository {
 
 }
 
-object DeviceDaoRepository extends DeviceDaoRepository with DeviceRepositoryCreator{
+object DeviceDaoRepository extends DeviceDaoRepository{
 
-  override def deviceDao: Dao[Device, String] = DeviceRepository
+  override def deviceDao: Dao[Device, String] = DeviceRepositoryCreator.DeviceRepository
 
-  override def dashBoardDao: Dao[DashBoard, String] = DashBoardRepository
+  override def dashBoardDao: Dao[DashBoard, String] = DeviceRepositoryCreator.DashBoardRepository
 
-  override def deviceGroupDao: Dao[DeviceGroup, String] = DeviceGroupRepository
+  override def deviceGroupDao: Dao[DeviceGroup, String] = DeviceRepositoryCreator.DeviceGroupRepository
 }
 
 
@@ -40,6 +40,8 @@ trait DeviceRepositoryCreator extends MongoRepositoryCreator with DeviceModelCon
   object DeviceGroupRepository extends MongoDao[DeviceGroup,String]("deviceGroups")
 
 }
+
+object DeviceRepositoryCreator extends DeviceRepositoryCreator
 
 
 

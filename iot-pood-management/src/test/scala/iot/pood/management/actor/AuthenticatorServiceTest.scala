@@ -1,14 +1,10 @@
 package iot.pood.management.actor
 
-import akka.testkit.TestProbe
-import iot.pood.base.actors.BaseActorTest
 import iot.pood.base.model.security.SecurityMessages.JwtToken
 import iot.pood.management.actors.AuthenticatorService
 import iot.pood.management.actors.AuthenticatorService._
-import iot.pood.management.base.TestSecurityConfig
 import iot.pood.management.security.internal.JwtTokenService
 import akka.pattern.ask
-import akka.util.Timeout
 import com.typesafe.config.ConfigFactory
 import iot.pood.base.model.user.UserMessages.SimpleUser
 import iot.pood.management.security.SecurityConfig

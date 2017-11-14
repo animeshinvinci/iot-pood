@@ -1,14 +1,19 @@
 package iot.pood.mqtt
 
+import iot.pood.base.app.{ActorApp, ConfigurableApp, HttpApp}
+import iot.pood.base.http.base.ApiVersionService
+import iot.pood.base.http.health.HealthHttpService
+
 import scala.io.StdIn
 
 /**
   * Created by rafik on 12.9.2017.
   */
-object MqttApplication extends App{
+object MqttApplication extends App with ActorApp
+with HttpApp
+with ConfigurableApp {
 
-  println("Log MQTT application")
-  StdIn.readLine()
+  override def httpServices: List[ApiVersionService] = List(HealthHttpService())
 
-
+  startHttp
 }

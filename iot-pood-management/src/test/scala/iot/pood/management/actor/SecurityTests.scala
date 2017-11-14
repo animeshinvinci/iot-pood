@@ -10,14 +10,9 @@ import scala.concurrent.duration.DurationDouble
 /**
   * Created by rafik on 12.10.2017.
   */
-trait SecurityTests extends BaseActorTest with TestSecurityConfig
+abstract class SecurityTests extends BaseActorTest with TestSecurityConfig
   with Matchers {
   import org.scalatest._
 
   implicit val timeout = Timeout(5 seconds)
-  import Matchers._
-  import scala.concurrent.duration._
-
-  import iot.pood.management.actors.AuthenticatorService._
-  import iot.pood.base.model.security.SecurityMessages._
 }

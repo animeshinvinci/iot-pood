@@ -1,4 +1,4 @@
-package iot.pood.service
+package iot.pood.engine
 
 import akka.actor.Actor.Receive
 import akka.actor.{ActorSystem, Props}
@@ -10,9 +10,12 @@ import akka.stream.ActorMaterializer
 import akka.util.Timeout
 import com.typesafe.config.ConfigFactory
 import iot.pood.base.actors.BaseActor
+import iot.pood.base.app.{ActorApp, ConfigurableApp, HttpApp}
 import iot.pood.base.config.HttpConfig.HttpApiPrefix
 import iot.pood.base.config.{Configuration, HttpConfig}
-import iot.pood.base.http.service.internal.HttpServiceCollector
+import iot.pood.base.http.base.ApiVersionService
+import iot.pood.base.http.base.internal.HttpServiceCollector
+import iot.pood.base.http.health.HealthHttpService
 import iot.pood.base.log.Log
 
 import scala.concurrent.duration.DurationDouble
@@ -22,10 +25,11 @@ import scala.io.StdIn
 /**
   * Created by rafik on 21.5.2017.
   */
-object EngineApplication extends App with Log{
+object EngineApplication extends App with ActorApp
+  with HttpApp
+  with ConfigurableApp {
 
-  Configuration.init()
-  val httpConfig = HttpConfig.httpConfig(Configuration.appConfig)
+  override def httpServices: List[ApiVersionService] = List(HealthHttpService())
 
+  startHttp
 }
-

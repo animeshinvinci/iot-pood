@@ -1,6 +1,6 @@
-package iot.pood.service.service
+package iot.pood.base.api
 
-import iot.pood.base.http.service.HttpEndPointVersion
+import iot.pood.base.http.base.HttpEndPointVersion
 
 /**
   * Created by rafik on 4.10.2017.

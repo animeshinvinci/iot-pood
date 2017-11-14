@@ -2,10 +2,10 @@ package iot.pood.management.security
 
 import java.util.concurrent.TimeUnit
 
+import iot.pood.base.actors.BaseTest
 import iot.pood.base.exception.Exceptions.TokenExpiredFailException
 import iot.pood.base.model.security.SecurityMessages.{JwtToken, Token}
 import iot.pood.base.model.user.UserMessages.SimpleUser
-import iot.pood.management.base.BaseTest
 import iot.pood.management.security.internal.JwtTokenService
 
 import scala.concurrent.duration
@@ -35,23 +35,6 @@ class JwtTokenServiceTest extends BaseTest{
             user.id should equal ("123")
           }
           case Failure(_) =>
-        }
-      }
-    }
-  }
-
-  it should "invalidate token and throw TokenExpiredFailException " in {
-    val config = SecurityConfig(Duration(2,duration.SECONDS),"secureKey")
-    val service = JwtTokenService(config)
-    val simpleUser = SimpleUser("123")
-
-    val token: Token = service.create(simpleUser)
-    token shouldBe a [JwtToken]
-    Thread.sleep(3000)
-    token match {
-      case JwtToken(jwt,_,_) => {
-        a [TokenExpiredFailException] should be thrownBy{
-          service.parse(jwt)
         }
       }
     }

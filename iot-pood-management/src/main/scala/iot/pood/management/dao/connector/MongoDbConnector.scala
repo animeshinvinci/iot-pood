@@ -26,6 +26,7 @@ object MongoDbConnector  extends App with Log {
 
   import ExecutionContext.Implicits.global
 
+
   val deviceDao = DeviceDaoRepository.deviceDao
 
   val logDao = UserDaoRepository.logDao

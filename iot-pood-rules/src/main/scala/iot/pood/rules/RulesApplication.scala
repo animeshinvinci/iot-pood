@@ -4,7 +4,10 @@ import java.time.Duration
 import java.util.Calendar
 
 import akka.actor.{ActorRef, ActorSystem, Props}
+import iot.pood.base.app.{ActorApp, ConfigurableApp, HttpApp}
 import iot.pood.base.config.{Configuration, HttpConfig}
+import iot.pood.base.http.base.ApiVersionService
+import iot.pood.base.http.health.HealthHttpService
 import iot.pood.base.integration.IntegrationConfig
 import iot.pood.base.log.Log
 import iot.pood.base.messages.integration.ComponentMessages.{GetIntegrationComponentRequest, GetIntegrationComponentResponse}
@@ -16,25 +19,47 @@ import scala.io.StdIn
 /**
   * Created by rafik on 6.6.2017.
   */
-object RulesApplication extends App with Log{
+object RulesApplication extends App with ActorApp
+  with HttpApp
+  with ConfigurableApp {
 
-  log.info("Application RULES start")
-  Configuration.init()
-  val httpConfig = HttpConfig.httpConfig(Configuration.appConfig)
-  val integrationConfig = IntegrationConfig(Configuration.appConfig)
+  override def httpServices: List[ApiVersionService] = List(HealthHttpService())
 
-  val system = ActorSystem()
-  val mainActor = system.actorOf(RulesAppGuardian.props(integrationConfig),RulesAppGuardian.NAME)
+  //  log.info("Application start")
+  //  Configuration.init()
+  //  val httpConfig = HttpConfig.httpConfig(Configuration.appConfig)
+  //  val integrationConfig = IntegrationConfig(Configuration.appConfig)
+  //
+  //  val system = ActorSystem()
+  //  val mainActor = system.actorOf(StorageAppGuardian.props(integrationConfig),StorageAppGuardian.NAME)
+  //  val simpleCommandPublisher = system.actorOf(SimpleCommandUtilPublisher.props(mainActor),SimpleCommandUtilPublisher.NAME)
+  //  val simpleDataPublisher = system.actorOf(SimpleDataUtilPublisher.props(mainActor),SimpleDataUtilPublisher.NAME)
+  //
+  //  log.info("Press ANY key to stop...")
+  //  StdIn.readLine()
+  //  system.terminate()
+  //  log.info("Application stop")
 
-  val simpleCommandPublisher = system.actorOf(SimpleCommandUtilPublisher.props(mainActor),SimpleCommandUtilPublisher.NAME)
-  val simpleDataPublisher = system.actorOf(SimpleDataUtilPublisher.props(mainActor),SimpleDataUtilPublisher.NAME)
-
-
-  log.info("Press ANY key to stop...")
-  StdIn.readLine()
-  system.terminate()
-  log.info("Application RULES stop")
-
+  startHttp
 }
+
+//  log.info("Application RULES start")
+//  Configuration.init()
+//  val httpConfig = HttpConfig.httpConfig(Configuration.appConfig)
+//  val integrationConfig = IntegrationConfig(Configuration.appConfig)
+//
+//  val system = ActorSystem()
+//  val mainActor = system.actorOf(RulesAppGuardian.props(integrationConfig),RulesAppGuardian.NAME)
+//
+//  val simpleCommandPublisher = system.actorOf(SimpleCommandUtilPublisher.props(mainActor),SimpleCommandUtilPublisher.NAME)
+//  val simpleDataPublisher = system.actorOf(SimpleDataUtilPublisher.props(mainActor),SimpleDataUtilPublisher.NAME)
+//
+//
+//  log.info("Press ANY key to stop...")
+//  StdIn.readLine()
+//  system.terminate()
+//  log.info("Application RULES stop")
+//
+//}
 
 

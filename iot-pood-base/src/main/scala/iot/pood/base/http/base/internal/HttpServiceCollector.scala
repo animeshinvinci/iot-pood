@@ -1,4 +1,4 @@
-package iot.pood.base.http.service.internal
+package iot.pood.base.http.base.internal
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
@@ -6,7 +6,7 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{ExceptionHandler, Route}
 import iot.pood.base.config.HttpConfig.{HttpApiPrefix, HttpConfig}
 import iot.pood.base.exception.Exceptions.IncorrectConfigurationException
-import iot.pood.base.http.service.{ApiVersionService, ExceptionResolver, HttpApiService}
+import iot.pood.base.http.base.{ApiVersionService, ExceptionResolver, HttpApiService}
 import org.jboss.netty.handler.codec.http.HttpVersion
 
 import scala.concurrent.ExecutionContext

@@ -1,6 +1,6 @@
 import sbt._
 
-mainClass in assembly := Some("iot.pood.mqtt.MqttApplication")
+mainClass in assembly := Some("iot.pood.management.ManagementApplication")
 assemblyJarName in assembly := s"management-application-${version.value}.jar"
 
 publishArtifact in(Compile, packageDoc) := false
@@ -29,7 +29,7 @@ dockerfile in docker := {
   new Dockerfile {
     from("openjdk:8-jre")
     maintainer("rafaj.peter@gmail.com")
-    expose(84, 8084)
+    expose(82, 8082)
     env("APP_BASE", s"$imageAppBaseDir")
     env("APP_CONF", s"$appConfTarget")
     env("LOG_CONF", s"$logConfTarget")

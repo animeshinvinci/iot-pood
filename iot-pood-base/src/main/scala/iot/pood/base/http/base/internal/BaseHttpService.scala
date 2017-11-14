@@ -1,8 +1,8 @@
-package iot.pood.base.http.service.internal
+package iot.pood.base.http.base.internal
 
 import akka.actor.ActorRef
 import iot.pood.base.config.HttpConfig.HttpConfig
-import iot.pood.base.http.service.{ApiVersionService, HttpApiService}
+import iot.pood.base.http.base.{ApiVersionService, HttpApiService}
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.Duration

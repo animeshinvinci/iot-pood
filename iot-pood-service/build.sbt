@@ -29,7 +29,7 @@ dockerfile in docker := {
   new Dockerfile {
     from("openjdk:8-jre")
     maintainer("rafaj.peter@gmail.com")
-    expose(82, 8082)
+    expose(85, 8085)
     env("APP_BASE", s"$imageAppBaseDir")
     env("APP_CONF", s"$appConfTarget")
     env("LOG_CONF", s"$logConfTarget")

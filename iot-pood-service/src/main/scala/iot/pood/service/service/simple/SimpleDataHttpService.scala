@@ -2,10 +2,10 @@ package iot.pood.service.service.simple
 
 import akka.actor.{ActorRef, ActorSystem, Props}
 import akka.http.scaladsl.server.Route
-import iot.pood.base.http.service.internal.BaseHttpService
+import iot.pood.base.api.ApiV1
+import iot.pood.base.http.base.internal.BaseHttpService
 import iot.pood.base.log.Log
 import iot.pood.service.SimpleActor
-import iot.pood.service.service.ApiV1
 
 import scala.concurrent.ExecutionContext
 

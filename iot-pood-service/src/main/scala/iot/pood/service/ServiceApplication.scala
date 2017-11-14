@@ -10,9 +10,12 @@ import akka.stream.ActorMaterializer
 import akka.util.Timeout
 import com.typesafe.config.ConfigFactory
 import iot.pood.base.actors.BaseActor
+import iot.pood.base.app.{ActorApp, ConfigurableApp, HttpApp}
 import iot.pood.base.config.HttpConfig.HttpApiPrefix
 import iot.pood.base.config.{Configuration, HttpConfig}
-import iot.pood.base.http.service.internal.HttpServiceCollector
+import iot.pood.base.http.base.ApiVersionService
+import iot.pood.base.http.base.internal.HttpServiceCollector
+import iot.pood.base.http.health.HealthHttpService
 import iot.pood.base.log.Log
 import iot.pood.service.service.simple.SimpleDataHttpService
 
@@ -23,34 +26,16 @@ import scala.io.StdIn
 /**
   * Created by rafik on 21.5.2017.
   */
-object ServiceApplication extends App with Log{
-
-  Configuration.init()
-  val httpConfig = HttpConfig.httpConfig(Configuration.appConfig)
-
-  implicit val system = ActorSystem()
-  implicit val materializer = ActorMaterializer()
-  implicit val executionContext = system.dispatcher
-  implicit val timeout = Timeout(2.seconds)
-
-  log.info("Start server HOST: {}:{} ",httpConfig.host,httpConfig.port)
-  log.info("HTTP configuration: {}",httpConfig)
-
-
-  val mainRoute =  HttpServiceCollector(httpConfig,List(SimpleDataHttpService())).route
-
-  val bindingFuture = Http().bindAndHandle(mainRoute, httpConfig.host,httpConfig.port)
-  log.info("Press any key to stop...")
-  StdIn.readLine()
-  bindingFuture
-    .flatMap(_.unbind())
-    .onComplete(_ => {
-      log.info("Terminate ActorSystem")
-      system.terminate()
-      })
+object ServiceApplication extends App
+  with ActorApp
+  with HttpApp
+  with ConfigurableApp
+{
+  startHttp
+  override def httpServices: List[ApiVersionService] = {
+    List(SimpleDataHttpService(),HealthHttpService())
+  }
 }
-
-
 class SimpleActor extends BaseActor
 {
   override def receive: Receive = {
