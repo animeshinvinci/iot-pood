@@ -26,12 +26,21 @@ object Dependencies {
     val enumerator = "1.5.12"
 
     val validator = "0.7.1"
+
+    val avro = "1.7.7"
   }
 
 
   val logback   = "ch.qos.logback" % "logback-classic" % Versions.logback
 
   val enumerator =  "com.beachape" %% "enumeratum" % Versions.enumerator
+
+  val avro = "org.apache.avro"  %  "avro"  %  Versions.avro
+
+
+  val serialisation           :Seq[ModuleID] = Seq (
+    avro
+  )
 
   val commonDependencies      :Seq[ModuleID] = Seq(
     "org.scalatest"   %%  "scalatest"   %   Versions.scalaTest   % "test",
@@ -95,9 +104,15 @@ object Dependencies {
     "com.beachape" %% "enumeratum-reactivemongo-bson" % Versions.enumerator
   )
 
+  val playDependencies        :Seq[ModuleID] = Seq(
+    "com.google.inject" % "guice" % "4.1.0",
+    "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
+  )
 
-  val utilDependencies          :Seq[ModuleID] = commonDependencies ++ jsonDependencies
-  val baseDependencies          :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ jsonDependencies ++ akkaHttpDependencies ++ testDependencies
+  val webDependencies           :Seq[ModuleID] = playDependencies
+
+  val utilDependencies          :Seq[ModuleID] = commonDependencies ++ jsonDependencies ++ serialisation
+  val baseDependencies          :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ jsonDependencies ++ akkaHttpDependencies ++ testDependencies ++ serialisation
   val serviceDependencies       :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ akkaHttpDependencies
   val engineDependencies        :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ akkaHttpDependencies
   val storageDependencies       :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ phantomDependencies

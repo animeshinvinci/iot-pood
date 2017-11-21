@@ -31,6 +31,7 @@ object Common {
                       Resolver.defaultLocal,
                       Resolver.mavenLocal,
                       Resolver.sonatypeRepo("releases"),
+                      Resolver.sonatypeRepo("snapshots"),
                       Resolver.typesafeRepo("releases"),
                       Resolver.bintrayRepo("websudos", "oss-releases"),
                       Resolver.bintrayRepo("outworkers", "oss-releases"),

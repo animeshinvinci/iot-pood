@@ -53,8 +53,13 @@ lazy val management = (project in file("iot-pood-management"))
   .enablePlugins(sbtdocker.DockerPlugin)
   .dependsOn(util,base% "compile->compile;test->test",integration)
 
+lazy val web = (project in file("iot-pood-web"))
+    .settings(Common.settings: _*)
+    .settings(libraryDependencies ++=Dependencies.webDependencies)
+      .enablePlugins(PlayScala)
+
 
 lazy val root = (project in file(".")).
-  aggregate(base,util,engine,service,integration,mqtt,storage,management,rules)
+  aggregate(base,util,engine,service,integration,mqtt,storage,management,rules,web)
 
 
