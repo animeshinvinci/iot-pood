@@ -35,7 +35,8 @@ object Common {
                       Resolver.typesafeRepo("releases"),
                       Resolver.bintrayRepo("websudos", "oss-releases"),
                       Resolver.bintrayRepo("outworkers", "oss-releases"),
-                      Resolver.bintrayRepo("cakesolutions", "maven")
+                      Resolver.bintrayRepo("cakesolutions", "maven"),
+                      Resolver.bintrayRepo("hseeberger", "maven")
     )
   )
 }

@@ -17,9 +17,17 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
    * will be called when the application receives a `GET` request with
    * a path of `/`.
    */
-  def index = Action {
+  def index = Action { request =>
+    Ok("Got request [" + request + "]")
+  }
+
+
+  def sum = Action {
     Ok(views.html.index("Your new xxx is ready."))
   }
 
-  def echo = Action { request:Request[AnyRef] => Ok("spdofk"+request.uri) }
+  def action = Action {
+    request => Ok("ok"+request.uri)
+  }
+
 }

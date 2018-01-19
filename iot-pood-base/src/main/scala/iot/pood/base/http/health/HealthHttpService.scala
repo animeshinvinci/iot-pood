@@ -17,7 +17,7 @@ object HealthHttpService extends Log{
 
   def apply()(implicit executionContext: ExecutionContext,actorSystem: ActorSystem)  = {
 
-    log.info("Create simple data HTTP service")
+    log.info("Create HEALTH service")
     val serviceActor = actorSystem.actorOf(Props(new SimpleWorker))
     new HealthHttpService(serviceActor)
   }

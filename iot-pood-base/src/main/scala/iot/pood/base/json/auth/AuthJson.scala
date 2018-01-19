@@ -1,12 +1,11 @@
 package iot.pood.base.json.auth
 
-import iot.pood.base.json.JsonApi
+import iot.pood.base.json.support.circle.CircleJson
 
 /**
   * Created by rafik on 11.10.2017.
   */
-trait AuthMessages {
-  this: JsonApi =>
+object AuthJson {
 
   case class LoginRequest(login: String, password: String)
 
@@ -16,7 +15,10 @@ trait AuthMessages {
                                refresh_token: String)
 
 
-  implicit val loginRequestFormatter = jsonFormat2(LoginRequest)
-  implicit val tokenAuthResponseFormatter=  jsonFormat4(TokenAuthResponse)
+}
+
+trait AuthJson extends CircleJson {
 
 }
+
+

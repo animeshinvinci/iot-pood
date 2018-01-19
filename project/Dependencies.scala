@@ -72,12 +72,22 @@ object Dependencies {
     "com.typesafe.akka"   %% "akka-stream"            % Versions.akka,
     "com.typesafe.akka"   %% "akka-testkit"           % Versions.akka        % "test"
   )
+
+  val circeVersion = "0.8.0"
+
+  val circleDependencies = Seq(
+    "io.circe" %% "circe-core",
+    "io.circe" %% "circe-generic",
+    "io.circe" %% "circe-parser"
+  ).map(_ % circeVersion)
   // akka http, REST
   val akkaHttpDependencies    :Seq[ModuleID] = Seq(
     "com.typesafe.akka"   %% "akka-http-spray-json"   % Versions.akkaHttp,
+    "de.heikoseeberger"   %% "akka-http-circe"        % "1.18.0",
     "com.typesafe.akka"   %% "akka-http"              % Versions.akkaHttp,
-    "com.typesafe.akka"   %% "akka-http-testkit"      % Versions.akkaHttp    % "test"
-  )
+    "com.typesafe.akka"   %% "akka-http-testkit"      % Versions.akkaHttp    % "test",
+    "com.beachape"        %% "enumeratum-circe"       % Versions.enumerator
+  ) ++ circleDependencies
   // cassandra, phantom
   val phantomDependencies     :Seq[ModuleID] = Seq(
     "com.outworkers"      %% "phantom-dsl"             % Versions.phantom exclude("io.netty", "netty-handler"),
@@ -108,6 +118,11 @@ object Dependencies {
     "com.google.inject" % "guice" % "4.1.0",
     "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test
   )
+  val swaggerDependencies     :Seq[ModuleID] = Seq(
+    "io.swagger" % "swagger-jaxrs" % "1.5.17",
+    "com.github.swagger-akka-http" %% "swagger-akka-http" % "0.11.1" excludeAll(ExclusionRule(organization = "com.typesafe.akka")),
+    "co.pragmati" %% "swagger-ui-akka-http" % "1.1.0"
+  )
 
   val webDependencies           :Seq[ModuleID] = playDependencies
 
@@ -119,5 +134,5 @@ object Dependencies {
   val integrationDependencies   :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ kafkaDependencies ++ utilDependencies
   val iotMessagingDependencies  :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ mqttDependencies ++ kafkaDependencies
   val rulesEngineDependencies   :Seq[ModuleID] = commonDependencies ++ akkaDependencies ++ kafkaDependencies
-  val managementDependencies    :Seq[ModuleID] =  commonDependencies ++ akkaDependencies ++ akkaHttpDependencies ++ securityException ++ mongoDependencies ++ validator
+  val managementDependencies    :Seq[ModuleID] =  commonDependencies ++ akkaDependencies ++ akkaHttpDependencies ++ securityException ++ mongoDependencies ++ validator ++ swaggerDependencies
 }

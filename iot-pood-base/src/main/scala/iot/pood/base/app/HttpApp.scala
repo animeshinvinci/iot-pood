@@ -25,7 +25,8 @@ trait HttpApp extends ConfigurableApp with Log{
   def startHttp:Unit = {
 
     log.info("Start HTTP: {}:{}",httpConfig.host,httpConfig.port)
-    val bindingFuture = Http().bindAndHandle(httpRoute, httpConfig.host,httpConfig.port)
+    val bindingFuture = Http().bindAndHandle(httpRoute
+      , httpConfig.host,httpConfig.port)
     log.info("Press any key to stop...")
     StdIn.readLine()
     bindingFuture

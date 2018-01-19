@@ -15,7 +15,7 @@ import scala.util.{Failure, Success}
   * Created by rafik on 16.10.2017.
   */
 object MongoApp extends App{
-
+  println("ahoj")
 //  // My settings (see available connection options)
 //  val mongoUri = "mongodb://localhost:27017"
 //

@@ -24,13 +24,13 @@ object DeviceModel {
                     key: String, value: String)
 
   case class DeviceGroup(@Key("_id")id: Option[String],created: DateTime,
-                         version: String
+                         version: String,name: String,comment: String
                          ,status: ObjectStatus,config: Map[String,Config])
         extends BaseObject
 
 
   case class Device(@Key("_id")id: Option[String],created: DateTime,
-                    version: String
+                    version: String,name: String,comment: String
                     ,status: ObjectStatus,config: Map[String,Config],
                     dataHolder:Map[String,DataHolder]) extends BaseObject
 

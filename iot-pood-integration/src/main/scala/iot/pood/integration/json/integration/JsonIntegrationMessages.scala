@@ -52,4 +52,3 @@ class SimpleStringDeserializer[T](implicit val jsonReader: JsonReader[T]) extend
     stringDeserializer.deserialize(topic,data).parseJson.convertTo[T]
   }
 }
-

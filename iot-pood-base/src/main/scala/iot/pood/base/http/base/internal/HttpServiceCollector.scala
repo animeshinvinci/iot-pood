@@ -1,12 +1,14 @@
 package iot.pood.base.http.base.internal
 
 import akka.actor.ActorSystem
+import akka.http.javadsl.server.{Rejection, Rejections}
 import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
-import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.{ExceptionHandler, Route}
+import akka.http.scaladsl.server.Directives.{complete, _}
+import akka.http.scaladsl.server._
 import iot.pood.base.config.HttpConfig.{HttpApiPrefix, HttpConfig}
 import iot.pood.base.exception.Exceptions.IncorrectConfigurationException
 import iot.pood.base.http.base.{ApiVersionService, ExceptionResolver, HttpApiService}
+import iot.pood.base.log.Log
 import org.jboss.netty.handler.codec.http.HttpVersion
 
 import scala.concurrent.ExecutionContext
@@ -18,10 +20,17 @@ import scala.concurrent.ExecutionContext
   */
 class HttpServiceCollector(httpConfig: HttpConfig,
                            httpServices: List[ApiVersionService],
-                           val exceptionHandler: ExceptionHandler)(implicit executorContext: ExecutionContext) extends HttpApiService with ExceptionResolver{
+                           val exceptionHandler: ExceptionHandler,
+                           rejectionHandler: RejectionHandler)(implicit executorContext: ExecutionContext) extends HttpApiService with ExceptionResolver
+   with Log{
 
-  override def route: Route = handleExceptions(exceptionHandler){
-    joinRoute(collectVersionedApi(httpConfig,httpServices))
+
+  override def route: Route = {
+    handleExceptions(exceptionHandler){
+      handleRejections(rejectionHandler) {
+        joinRoute(collectVersionedApi(httpConfig, httpServices))
+      }
+    }
   }
 
   def collectVersionedApi(httpConfig: HttpConfig,httpServices: List[ApiVersionService]) = {
@@ -55,15 +64,31 @@ object HttpServiceCollector{
       extractUri { uri =>
         extractRequest { r =>
           println(s"Request to $uri could not be handled normally")
-          complete(HttpResponse(StatusCodes.InternalServerError, entity = "Bad numbers, bad result!!!"))
+          complete(HttpResponse(StatusCodes.InternalServerError))
         }
     }
   }
 
+  private[this] val rejectionHandler =
+    RejectionHandler.newBuilder()
+      .handle {
+        case RequestEntityExpectedRejection => complete(HttpResponse(StatusCodes.InternalServerError,entity = "error1"))
+        case MalformedRequestContentRejection(msg,e) => complete(HttpResponse(StatusCodes.InternalServerError,entity = "error2"))
+        case UnsupportedRequestContentTypeRejection(supported) => complete(HttpResponse(StatusCodes.InternalServerError,entity = "error3"))
+        case _ => {
+          complete(HttpResponse(StatusCodes.InternalServerError,entity = "error4"))
+        }
+      }
+      .handleNotFound{
+        complete(HttpResponse(StatusCodes.NotFound))
+      }
+      .result()
+
 
   def apply(httpConfig: HttpConfig,
             httpServices: List[ApiVersionService],
-        exceptionHandler: ExceptionHandler = defaultExceptionHandler
-  ) ( implicit executorContext: ExecutionContext): HttpServiceCollector = new HttpServiceCollector(httpConfig, httpServices,exceptionHandler)
+        exceptionHandler: ExceptionHandler = defaultExceptionHandler,
+        rejectionHandler: RejectionHandler = rejectionHandler
+  ) ( implicit executorContext: ExecutionContext): HttpServiceCollector = new HttpServiceCollector(httpConfig, httpServices,exceptionHandler,rejectionHandler)
 
 }
